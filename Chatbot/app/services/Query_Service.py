@@ -109,37 +109,6 @@ class Retrieve:
         ranked = sorted(docs, key=lambda x: x["keyword_score"], reverse=True)
         return ranked[:10]
 
-
-    # def check_semantic_cache(self, question_embedding):
-    #     for key in self.redis_client.scan_iter("semantic_cache:*", count=50):
-    #         value = self.redis_client.get(key)
-
-    #         if not value:
-    #             continue
-
-    #         data = json.loads(value)
-    #         cached_embedding = np.array(data["embedding"])
-
-    #         similarity = cosine_similarity(
-    #             [question_embedding],
-    #             [cached_embedding]
-    #         )[0][0]
-
-    #         if similarity >= self.config.CACHE_THRESHOLD:
-    #             logging.info("Response found in Semantic Cache")
-    #             return data["response"]
-    #     return None
-
-    # def store_cache(self, question, embedding, response):
-    #     invalid_response = "The documents does not have a specific answer to your question"
-    #     if response != invalid_response:
-    #         cache_key = f"semantic_cache:{hash(question)}"
-    #         cache_data = {
-    #             "embedding": embedding.tolist(),
-    #             "response": response
-    #         }
-    #         self.redis_client.setex(cache_key, self.config.CACHE_TTL,json.dumps(cache_data))
-
     def vector_search(self, query_embedding, limit=10):
         results = self.database.client.query_points(
             collection_name=self.config.COLLECTION_NAME,

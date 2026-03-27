@@ -34,15 +34,6 @@ New Chat
         ))}
       </div>
 
-
-{/* <div className="space-y-9 text-sm">
-
-    {intents.map((intent,index)=>(<div key={index} className="w-[320px] h-[30px] p-6 hover:bg-gray-100 dark:hover:bg-gray-800 rounded cursor-pointer">{intent}
-</div>
-))}
-
-</div> */}
-
 <div className="mt-auto pt-12 w-full px-2">
   <div className="w-[200px] h-[60px] overflow-hidden  h-24">
     <ThemeToggle />

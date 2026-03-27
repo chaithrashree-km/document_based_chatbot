@@ -3,6 +3,7 @@ import os
 import redis
 import json
 import uuid
+import asyncio
 from datetime import datetime
 import shutil
 from app.core.Rate_Limiter import limiter
@@ -130,7 +131,7 @@ async def chat(request: Request, chat_request: Chat, user=Depends(auth.verify_to
     session_id,start, end = session.get_or_create_session(user_id)
    
     logging.info(f"Checking intent of the query")
-    intent =  response.detect_intent(chat_request.question)
+    intent_task = asyncio.to_thread(response.detect_intent, chat_request.question)
     logging.info(f"Intent checking completed")
     answer = await retrieve.query_docs(chat_request.question)
 
@@ -143,7 +144,7 @@ async def chat(request: Request, chat_request: Chat, user=Depends(auth.verify_to
     logging.info(f"Sending Response...")
     return {
         "session_id":session_id,
-        "intent": intent,
+        "intent": intent_task,
         "Response": answer
     }
 
