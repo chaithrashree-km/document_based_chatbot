@@ -17,12 +17,12 @@ celery.conf.update(
 )
 
 @celery.task(bind=True)
-def async_upload(self, path: str):
+def async_upload(self, path: str,  file_hash: str = None):
     try:
         from app.services.Ingest_Service import Upload
         upload = Upload()
         self.update_state(state="PROGRESS", meta={"status": "Extracting documents..."})
-        result = upload.upload_documents(path)
+        result = upload.upload_documents(path, file_hash=file_hash)
 
         self.update_state(state="PROGRESS", meta={"status": "Refreshing search index..."})
         from app.services.Query_Service import Retrieve

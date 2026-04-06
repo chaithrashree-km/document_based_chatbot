@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from app.Config import Config
-from app.db.Postgres_Database import get_pool
 from app.services.Health_Service import Health_Service
 from fastapi.responses import JSONResponse
 
@@ -17,7 +16,7 @@ def overall_health():
         "postgres": service.check_postgres(),
         "qdrant": service.check_qdrant()
     }
-    all_up = all(v["status"] == "UP & RUNNING" for v in services.values())
+    all_up = all(v["status"] == "up" for v in services.values())
     status_code = 200 if all_up else 503
     return JSONResponse(
         status_code=status_code,

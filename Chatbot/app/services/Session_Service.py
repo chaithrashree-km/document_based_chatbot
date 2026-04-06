@@ -61,3 +61,12 @@ class SessionManagement:
         logging.info(f"session_start-time:{session_start} \n session_end-time: {session_end} ")
         return session_id, session_start, session_end
 
+ def delete_session_from_redis(self, user_id: str, session_id: str):
+
+        session_key = f"user_session:{user_id}"
+        existing = self.redis_client.get(session_key)
+        if existing:
+            session_data = json.loads(existing)
+            if session_data.get("session_id") == session_id:
+                self.redis_client.delete(session_key)
+                logging.info(f"Redis session key removed for user {user_id} (session {session_id})") 

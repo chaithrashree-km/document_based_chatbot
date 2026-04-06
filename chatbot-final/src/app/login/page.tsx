@@ -41,19 +41,39 @@ export default function Login(){
         const data = await res.json()
 
         if(!res.ok){
+            localStorage.removeItem("token")
+  switch (res.status) {
+          case 401:
+            setError(
+              data.detail === "session_expired" || data.detail === "token_expired"
+                ? "Your session has expired. Please log in again."
+                : "Invalid email or password. Please try again."
+            )
+            break
+            case 422:
             setError(parseError(data.detail))
-           return
+            break
+          case 429:
+            setError("Too many login attempts. Please wait and try again.")
+            break
+          case 500:
+            setError("Server error. Please try again later.")
+            break
+          default:
+            setError(parseError(data.detail))
         }
-
-        localStorage.setItem("token", data.access_token)
-        router.push("/chat")
-    }catch(error){
-      console.error(error)
+        return
+      }
+      localStorage.setItem("token", data.access_token)
+      router.push("/chat")
+    } catch (err) {
+      console.error(err)
       setError("Unable to connect. Please check your network and try again.")
-     }finally {
-      setIsLoading(false)  
+    } finally {
+      setIsLoading(false)
     }
-}
+  }
+     
 
  function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Enter") login()

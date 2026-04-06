@@ -26,8 +26,8 @@ class Config:
  DOCUMENT_COLLECTION_NAME = "documents_collection"
  ALLOWED_EXTENSIONS = {".pdf", ".txt", ".csv", ".xls", ".xlsx", ".jpg", ".jpeg", ".png", ".docx", ".pptx", ".html", ".md"}
  MAX_FILE_SIZE = 30 * 1024 * 1024  # 30MB
- MIN_CONN = 2
- MAX_CONN = 30
+ MIN_CONN = 5
+ MAX_CONN = 20
  ALLOWED_MIME_TYPES = {
         "application/pdf", "text/plain", "text/csv",
         "application/vnd.ms-excel",

@@ -41,6 +41,3 @@ class Authentication:
             self.config.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
             "revoked"
         ) 
-
-   
-    

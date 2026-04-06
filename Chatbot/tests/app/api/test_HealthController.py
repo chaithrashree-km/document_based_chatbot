@@ -13,9 +13,9 @@ class TestHealthController:
 
     def test_overall_health_all_up(self):
         mock_responses = {
-            "redis": {"status": "UP & RUNNING"},
-            "postgres": {"status": "UP & RUNNING"},
-            "qdrant": {"status": "UP & RUNNING"}
+            "redis": {"status": "up"},
+            "postgres": {"status": "up"},
+            "qdrant": {"status": "up"}
         }
         with patch("app.api.Health_Controller.service") as mock_service:
             mock_service.check_redis.return_value = mock_responses["redis"]

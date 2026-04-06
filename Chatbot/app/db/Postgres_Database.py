@@ -3,20 +3,23 @@ from psycopg2 import pool
 from app.Config import Config
 
 _pool = None
+_pool_lock = threading.Lock()
 
 def get_pool():
     global _pool
     if _pool is None:
-        config = Config()
-        _pool = pool.ThreadedConnectionPool(
-            minconn=config.MIN_CONN,
-            maxconn=config.MAX_CONN,
-            dbname=config.POSTGRES_DB,
-            user=config.POSTGRES_USER,
-            password=config.POSTGRES_PASSWORD,
-            host=config.POSTGRES_HOST,
-            port=config.POSTGRES_PORT
-        )
+        with _pool_lock:
+            if _pool is None:   
+                config = Config()
+                _pool = pool.ThreadedConnectionPool(
+                    minconn=config.MIN_CONN,
+                    maxconn=config.MAX_CONN,
+                    dbname=config.POSTGRES_DB,
+                    user=config.POSTGRES_USER,
+                    password=config.POSTGRES_PASSWORD,
+                    host=config.POSTGRES_HOST,
+                    port=config.POSTGRES_PORT
+                )
     return _pool
 
 

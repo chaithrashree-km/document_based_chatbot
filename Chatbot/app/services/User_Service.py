@@ -29,10 +29,8 @@ class UserService:
         finally:
             db.return_to_pool()
 
-    def get_user_by_email(self,email):
-
-        query = "SELECT id,email,password_hash FROM users WHERE email=%s"
-
+    def get_user_by_email(self, email):
+        query = "SELECT id, email, password_hash FROM users WHERE email=%s"
         db = Database()
         try:
             db.cursor.execute(query, (email,))
